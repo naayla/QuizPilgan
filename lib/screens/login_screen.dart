@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
-import 'quiz_screen.dart';
+import 'dashboard_screen.dart';
 import '../widgets/auth_card.dart';
+import '../data/user_data.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
@@ -66,10 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    UserData.addUser(_emailController.text.trim(), _emailController.text.trim());
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => QuizScreen(userName: _emailController.text.trim()),
+                        builder: (context) => DashboardScreen(
+                          userName: _emailController.text.trim(),
+                          toggleTheme: widget.toggleTheme,
+                          isDarkMode: widget.isDarkMode,
+                        ),
                       ),
                     );
                   }

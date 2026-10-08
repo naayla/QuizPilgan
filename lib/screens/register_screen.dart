@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/auth_card.dart';
+import '../data/user_data.dart';
 
 class RegisterScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
@@ -93,6 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    UserData.addUser(_nameController.text.trim(), _emailController.text.trim());
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Registrasi berhasil! Silakan masuk.')),
                     );

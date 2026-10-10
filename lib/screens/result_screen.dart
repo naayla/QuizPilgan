@@ -8,8 +8,9 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F5F7),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1976D2),
         foregroundColor: Colors.white,
@@ -24,6 +25,7 @@ class ResultScreen extends StatelessWidget {
             child: Card(
               elevation: 4,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
                 child: Column(
@@ -33,15 +35,15 @@ class ResultScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     Text(
                       'Terima Kasih, $userName!',
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2)),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
-                    const Text('Skor Akhir Anda:', style: TextStyle(fontSize: 16, color: Colors.grey)),
+                    Text('Skor Akhir Anda:', style: TextStyle(fontSize: 16, color: isDark ? Colors.grey.shade400 : Colors.grey)),
                     const SizedBox(height: 8),
                     Text(
                       '$score',
-                      style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2)),
                     ),
                     const SizedBox(height: 36),
                     SizedBox(

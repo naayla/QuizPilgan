@@ -24,19 +24,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F5F7),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF46178F), // Purple Header matching screenshot
+        backgroundColor: const Color(0xFF1976D2), // Matching Login/Register Blue header
         elevation: 0,
         foregroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Dashboard Admin', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            Text('Aplikasi Ujian Sumatif - Halo, ${widget.userName}', style: const TextStyle(fontSize: 12, color: Colors.white70)),
-          ],
-        ),
+        title: const Text('Dashboard', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.dark_mode),
@@ -58,15 +53,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: Column(
         children: [
-          // Header Navigation Tabs (Dashboard & Data Siswa only)
+          // Header Navigation Tabs
           Container(
-            color: Colors.white,
+            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
-                _buildTabButton(0, Icons.dashboard, 'Dashboard'),
+                _buildTabButton(0, Icons.dashboard, 'Dashboard', isDark),
                 const SizedBox(width: 12),
-                _buildTabButton(1, Icons.people, 'Data Siswa'),
+                _buildTabButton(1, Icons.people, 'Data Siswa', isDark),
               ],
             ),
           ),
@@ -79,7 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
-                  child: _buildCurrentTabContent(),
+                  child: _buildCurrentTabContent(isDark),
                 ),
               ),
             ),
@@ -89,12 +84,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildTabButton(int index, IconData icon, String label) {
+  Widget _buildTabButton(int index, IconData icon, String label, bool isDark) {
     bool isSelected = (_currentTab == index);
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? const Color(0xFF1976D2) : Colors.grey.shade200,
-        foregroundColor: isSelected ? Colors.white : Colors.black87,
+        backgroundColor: isSelected ? const Color(0xFF1976D2) : (isDark ? Colors.grey.shade800 : Colors.grey.shade200),
+        foregroundColor: isSelected ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
         elevation: isSelected ? 2 : 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -109,7 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildCurrentTabContent() {
+  Widget _buildCurrentTabContent(bool isDark) {
     if (_currentTab == 0) {
       // Tab 0: Dashboard with Quick Actions and Recent Modules
       return Column(
@@ -119,19 +114,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Quick Actions',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A202C)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1A202C)),
                 ),
                 const SizedBox(height: 4),
-                const Text('Common tasks and shortcuts', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                Text('Common tasks and shortcuts', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 16,
@@ -139,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5A4FCF),
+                        backgroundColor: const Color(0xFF1976D2), // Matching Blue
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -159,8 +154,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        side: BorderSide(color: Colors.grey.shade300),
-                        foregroundColor: Colors.black87,
+                        side: BorderSide(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+                        foregroundColor: isDark ? Colors.white : Colors.black87,
                       ),
                       onPressed: () {
                         setState(() {
@@ -181,7 +176,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
             ),
@@ -194,25 +189,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Recent Modules',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A202C)),
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1A202C)),
                         ),
                         const SizedBox(height: 4),
-                        const Text('Your latest created quiz modules', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                        Text('Your latest created quiz modules', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
                       ],
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('View all', style: TextStyle(color: Color(0xFF5A4FCF), fontWeight: FontWeight.bold)),
+                      child: const Text('View all', style: TextStyle(color: Color(0xFF1976D2), fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildRecentModuleCard('Flutter Basics: Introduction', 'F', Colors.indigo),
-                _buildRecentModuleCard('State Management & Provider', 'S', Colors.deepPurple),
-                _buildRecentModuleCard('Widgets & Layouts in Flutter', 'W', Colors.blue),
-                _buildRecentModuleCard('Advanced Routing & Navigation', 'A', Colors.teal),
+                _buildRecentModuleCard('Flutter Basics: Introduction', 'F', Colors.blue, isDark),
+                _buildRecentModuleCard('State Management & Provider', 'S', Colors.indigo, isDark),
+                _buildRecentModuleCard('Widgets & Layouts in Flutter', 'W', Colors.lightBlue, isDark),
+                _buildRecentModuleCard('Advanced Routing & Navigation', 'A', Colors.cyan, isDark),
               ],
             ),
           ),
@@ -226,17 +221,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Data Siswa Peserta Ujian', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Expanded(
+                child: Text(
+                  'Data Siswa Peserta Ujian',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
               Chip(
-                backgroundColor: Colors.blue.shade50,
-                label: Text('${UserData.registeredUsers.length} Siswa Terdaftar', style: const TextStyle(color: Color(0xFF1976D2), fontWeight: FontWeight.bold)),
+                backgroundColor: isDark ? Colors.blue.shade900.withValues(alpha: 0.4) : Colors.blue.shade50,
+                label: Text('${UserData.registeredUsers.length} Siswa Terdaftar', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF1976D2), fontWeight: FontWeight.bold)),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10)],
             ),
@@ -253,11 +255,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         backgroundColor: const Color(0xFF1976D2),
                         child: Text('${index + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
-                      title: Text(user['name'] ?? 'Siswa', style: const TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text('Email/Username: ${user['email']} • NISN: ${user['nisn']}'),
+                      title: Text(user['name'] ?? 'Siswa', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
+                      subtitle: Text('Email/Username: ${user['email']} • NISN: ${user['nisn']}', style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey)),
                       trailing: const Icon(Icons.check_circle, color: Colors.green, size: 18),
                     ),
-                    if (index < UserData.registeredUsers.length - 1) const Divider(height: 1),
+                    if (index < UserData.registeredUsers.length - 1) Divider(height: 1, color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),
                   ],
                 );
               },
@@ -268,14 +270,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  Widget _buildRecentModuleCard(String title, String initial, Color avatarColor) {
+  Widget _buildRecentModuleCard(String title, String initial, Color avatarColor, bool isDark) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),
       ),
       child: Row(
         children: [
@@ -288,7 +290,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF1A202C))),
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: isDark ? Colors.white : const Color(0xFF1A202C))),
                 const SizedBox(height: 4),
                 Row(
                   children: const [
@@ -304,7 +306,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              side: BorderSide(color: Colors.grey.shade300),
+              side: BorderSide(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+              foregroundColor: isDark ? Colors.white : Colors.black87,
             ),
             onPressed: () {
               Navigator.push(

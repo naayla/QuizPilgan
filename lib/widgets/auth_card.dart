@@ -18,8 +18,9 @@ class AuthCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F5F7),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1976D2),
         elevation: 2,
@@ -34,7 +35,7 @@ class AuthCard extends StatelessWidget {
             child: Card(
               elevation: 4,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-              color: Colors.white,
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
                 child: Column(
@@ -51,13 +52,17 @@ class AuthCard extends StatelessWidget {
                     const SizedBox(height: 24),
                     Text(
                       title,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2),
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       subtitle,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      style: TextStyle(fontSize: 14, color: isDark ? Colors.grey.shade400 : Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 28),

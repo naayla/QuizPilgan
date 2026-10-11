@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/quiz_data.dart';
+import '../data/user_data.dart';
 import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -57,6 +58,8 @@ class _QuizScreenState extends State<QuizScreen> {
         score += 25;
       }
     }
+
+    UserData.addQuizResult(widget.userName, score);
 
     Navigator.pushReplacement(
       context,

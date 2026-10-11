@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'quiz_screen.dart';
 import 'login_screen.dart';
+import 'quiz_history_screen.dart';
 import '../data/user_data.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -158,12 +159,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         foregroundColor: isDark ? Colors.white : Colors.black87,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _currentTab = 1; // Switch to Data Siswa
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => QuizHistoryScreen(
+                              toggleTheme: widget.toggleTheme,
+                              isDarkMode: widget.isDarkMode,
+                            ),
+                          ),
+                        );
                       },
-                      icon: const Icon(Icons.people, size: 18),
-                      label: const Text('Lihat Data Siswa', style: TextStyle(fontWeight: FontWeight.bold)),
+                      icon: const Icon(Icons.history, size: 18),
+                      label: const Text('Riwayat Nilai Siswa', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -256,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: Text('${index + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                       title: Text(user['name'] ?? 'Siswa', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
-                      subtitle: Text('Email/Username: ${user['email']} • NISN: ${user['nisn']}', style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey)),
+                      subtitle: Text('Email/Username: ${user['email']}', style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey)),
                       trailing: const Icon(Icons.check_circle, color: Colors.green, size: 18),
                     ),
                     if (index < UserData.registeredUsers.length - 1) Divider(height: 1, color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),

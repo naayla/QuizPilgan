@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'logo_painter.dart';
 
 class AuthCard extends StatelessWidget {
+  final String appBarTitle;
   final String title;
   final String subtitle;
   final IconData icon;
@@ -9,6 +11,7 @@ class AuthCard extends StatelessWidget {
 
   const AuthCard({
     super.key,
+    required this.appBarTitle,
     required this.title,
     required this.subtitle,
     required this.icon,
@@ -22,10 +25,10 @@ class AuthCard extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1976D2),
+        backgroundColor: const Color(0xFF315B8C),
         elevation: 2,
         foregroundColor: Colors.white,
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: Text(appBarTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -44,10 +47,10 @@ class AuthCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1976D2).withValues(alpha: 0.1),
+                        color: const Color(0xFF315B8C),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(icon, size: 54, color: const Color(0xFF1976D2)),
+                      child: const LogoPainterWidget(size: 48),
                     ),
                     const SizedBox(height: 24),
                     Text(
@@ -55,7 +58,7 @@ class AuthCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2),
+                        color: isDark ? Colors.blue.shade300 : const Color(0xFF315B8C),
                       ),
                       textAlign: TextAlign.center,
                     ),

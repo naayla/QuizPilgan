@@ -28,7 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1976D2), // Matching Login/Register Blue header
+        backgroundColor: const Color(0xFF315B8C), // Matching #315B8C header
         elevation: 0,
         foregroundColor: Colors.white,
         title: const Text('Dashboard', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
@@ -88,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     bool isSelected = (_currentTab == index);
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? const Color(0xFF1976D2) : (isDark ? Colors.grey.shade800 : Colors.grey.shade200),
+        backgroundColor: isSelected ? const Color(0xFF315B8C) : (isDark ? Colors.grey.shade800 : Colors.grey.shade200),
         foregroundColor: isSelected ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
         elevation: isSelected ? 2 : 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -134,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1976D2), // Matching Blue
+                        backgroundColor: const Color(0xFF315B8C), // Matching #315B8C
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -199,7 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('View all', style: TextStyle(color: Color(0xFF1976D2), fontWeight: FontWeight.bold)),
+                      child: const Text('View all', style: TextStyle(color: Color(0xFF315B8C), fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -231,7 +231,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 8),
               Chip(
                 backgroundColor: isDark ? Colors.blue.shade900.withValues(alpha: 0.4) : Colors.blue.shade50,
-                label: Text('${UserData.registeredUsers.length} Siswa Terdaftar', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF1976D2), fontWeight: FontWeight.bold)),
+                label: Text('${UserData.registeredUsers.length} Siswa Terdaftar', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF315B8C), fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -252,7 +252,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: const Color(0xFF1976D2),
+                        backgroundColor: const Color(0xFF315B8C),
                         child: Text('${index + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                       title: Text(user['name'] ?? 'Siswa', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),

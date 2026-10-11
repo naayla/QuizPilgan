@@ -81,7 +81,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1976D2),
+        backgroundColor: const Color(0xFF315B8C),
         elevation: 2,
         foregroundColor: Colors.white,
         title: const Text('Quiz', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -136,7 +136,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         color: isDark ? Colors.blue.shade900.withValues(alpha: 0.4) : Colors.blue.shade50,
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: Text('📘 Materi', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF1976D2), fontWeight: FontWeight.bold, fontSize: 12)),
+                      child: Text('📘 Materi', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF315B8C), fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                     const SizedBox(width: 12),
                     Text('Soal ${_currentIndex + 1}/$totalQ', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.grey.shade400 : Colors.grey)),
@@ -192,7 +192,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       : (isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade50),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: isSelected ? const Color(0xFF1976D2) : (isDark ? Colors.grey.shade700 : Colors.grey.shade300),
+                                    color: isSelected ? const Color(0xFF315B8C) : (isDark ? Colors.grey.shade700 : Colors.grey.shade300),
                                     width: isSelected ? 2 : 1,
                                   ),
                                 ),
@@ -203,7 +203,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       height: 32,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: isSelected ? const Color(0xFF1976D2) : (isDark ? Colors.grey.shade700 : Colors.grey.shade200),
+                                        color: isSelected ? const Color(0xFF315B8C) : (isDark ? Colors.grey.shade700 : Colors.grey.shade200),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
@@ -281,7 +281,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1976D2),
+                        backgroundColor: const Color(0xFF315B8C),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -351,7 +351,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               boxColor = Colors.amber.shade400;
                               textColor = Colors.white;
                             } else if (isAnswered) {
-                              boxColor = const Color(0xFF1976D2);
+                              boxColor = const Color(0xFF315B8C);
                               textColor = Colors.white;
                             }
 
@@ -383,7 +383,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           spacing: 16,
                           runSpacing: 8,
                           children: [
-                            _buildLegendItem(const Color(0xFF1976D2), 'Sudah dijawab', isDark),
+                            _buildLegendItem(const Color(0xFF315B8C), 'Sudah dijawab', isDark),
                             _buildLegendItem(Colors.amber.shade400, 'Ragu-ragu', isDark),
                             _buildLegendItem(isDark ? Colors.grey.shade800 : Colors.grey.shade200, 'Belum dijawab', isDark, textColor: isDark ? Colors.white70 : Colors.black87),
                           ],
@@ -410,7 +410,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         const SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                          children: [
                             Text('Belum:', style: TextStyle(color: isDark ? Colors.grey.shade300 : Colors.black87)),
                             Text('$unattemptedCount', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
                           ],

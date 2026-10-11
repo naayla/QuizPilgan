@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'register_screen.dart';
 import 'dashboard_screen.dart';
 import '../widgets/auth_card.dart';
@@ -21,7 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AuthCard(
+      appBarTitle: 'Aplikasi Quiz',
       title: 'Masuk (Login)',
       subtitle: 'Silakan masuk untuk mulai mengerjakan kuis.',
       icon: Icons.lock_outline,
@@ -31,13 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextFormField(
               controller: _emailController,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Email / Username',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.email, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.email, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Email tidak boleh kosong!' : null,
             ),
@@ -45,13 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
             TextFormField(
               controller: _passwordController,
               obscureText: true,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.lock, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.lock, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Password tidak boleh kosong!' : (v.length < 6 ? 'Password minimal 6 karakter!' : null),
             ),
@@ -61,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 52,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1976D2),
+                  backgroundColor: const Color(0xFF315B8C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
@@ -86,16 +92,29 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-      bottomAction: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RegisterScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+      bottomAction: RichText(
+        text: TextSpan(
+          text: 'Belum punya akun? ',
+          style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
+          children: [
+            TextSpan(
+              text: 'Daftar di sini',
+              style: const TextStyle(
+                color: Color(0xFF315B8C),
+                fontWeight: FontWeight.bold,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegisterScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+                    ),
+                  );
+                },
             ),
-          );
-        },
-        child: const Text('Belum punya akun? Daftar di sini', style: TextStyle(color: Color(0xFF1976D2), fontWeight: FontWeight.w600)),
+          ],
+        ),
       ),
     );
   }

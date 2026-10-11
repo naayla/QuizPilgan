@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import '../widgets/auth_card.dart';
 import '../data/user_data.dart';
 
@@ -21,7 +22,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AuthCard(
+      appBarTitle: 'Aplikasi Quiz',
       title: 'Daftar Akun',
       subtitle: 'Daftar untuk mulai menjelajahi kuis.',
       icon: Icons.person_add_outlined,
@@ -31,26 +35,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             TextFormField(
               controller: _nameController,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Nama Lengkap',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.person, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.person, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Nama tidak boleh kosong!' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _emailController,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.email, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.email, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Email tidak boleh kosong!' : null,
             ),
@@ -58,13 +64,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextFormField(
               controller: _passwordController,
               obscureText: true,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.lock, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.lock, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Password tidak boleh kosong!' : (v.length < 6 ? 'Password minimal 6 karakter!' : null),
             ),
@@ -72,13 +79,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextFormField(
               controller: _confirmPasswordController,
               obscureText: true,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
                 labelText: 'Konfirmasi Password',
-                labelStyle: const TextStyle(color: Color(0xFF1976D2)),
+                labelStyle: const TextStyle(color: Color(0xFF315B8C)),
                 filled: true,
-                fillColor: Colors.grey[100],
+                fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF1976D2)),
+                prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF315B8C)),
               ),
               validator: (v) => v == null || v.trim().isEmpty ? 'Konfirmasi password tidak boleh kosong!' : (v != _passwordController.text ? 'Password tidak sama!' : null),
             ),
@@ -88,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 52,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1976D2),
+                  backgroundColor: const Color(0xFF315B8C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
@@ -107,9 +115,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
-      bottomAction: TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Sudah punya akun? Masuk di sini', style: TextStyle(color: Color(0xFF1976D2), fontWeight: FontWeight.w600)),
+      bottomAction: RichText(
+        text: TextSpan(
+          text: 'Sudah punya akun? ',
+          style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
+          children: [
+            TextSpan(
+              text: 'Masuk di sini',
+              style: const TextStyle(
+                color: Color(0xFF315B8C),
+                fontWeight: FontWeight.bold,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.pop(context);
+                },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'quiz_screen.dart';
 import 'login_screen.dart';
 import 'quiz_history_screen.dart';
 import '../data/user_data.dart';
+import '../data/quiz_data.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String userName;
@@ -127,7 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1A202C)),
                 ),
                 const SizedBox(height: 4),
-                Text('Common tasks and shortcuts', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
+                Text('Panduan & Riwayat Ujian', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 16,
@@ -141,15 +142,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => QuizScreen(userName: widget.userName),
+                        // Show instructions dialog or start quick quiz
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                            title: Text('Petunjuk Pengerjaan', style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontWeight: FontWeight.bold)),
+                            content: Text(
+                              'Pilih modul kuis di bagian bawah dashboard untuk mulai mengerjakan.',
+                              style: TextStyle(color: isDark ? Colors.grey.shade300 : Colors.black87),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Tutup', style: TextStyle(color: Color(0xFF315B8C), fontWeight: FontWeight.bold)),
+                              ),
+                            ],
                           ),
                         );
                       },
-                      icon: const Icon(Icons.play_arrow, size: 18),
-                      label: const Text('Mulai Kuis Sekarang', style: TextStyle(fontWeight: FontWeight.bold)),
+                      icon: const Icon(Icons.info_outline, size: 18),
+                      label: const Text('Petunjuk Pengerjaan', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
@@ -193,17 +206,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Recent Modules',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1A202C)),
-                        ),
-                        const SizedBox(height: 4),
-                        Text('Your latest created quiz modules', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Recent Modules',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1A202C)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text('Pilih modul kuis untuk mulai mengerjakan', style: TextStyle(fontSize: 13, color: isDark ? Colors.grey.shade400 : Colors.grey)),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     TextButton(
                       onPressed: () {},
                       child: const Text('View all', style: TextStyle(color: Color(0xFF315B8C), fontWeight: FontWeight.bold)),
@@ -211,10 +228,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildRecentModuleCard('Flutter Basics: Introduction', 'F', Colors.blue, isDark),
-                _buildRecentModuleCard('State Management & Provider', 'S', Colors.indigo, isDark),
-                _buildRecentModuleCard('Widgets & Layouts in Flutter', 'W', Colors.lightBlue, isDark),
-                _buildRecentModuleCard('Advanced Routing & Navigation', 'A', Colors.cyan, isDark),
+                ...QuizData.modules.keys.toList().asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final title = entry.value;
+                  final colors = [Colors.blue, Colors.indigo, Colors.lightBlue, Colors.cyan, Colors.purple, Colors.teal];
+                  final color = colors[index % colors.length];
+                  final initial = title.isNotEmpty ? title[0].toUpperCase() : 'M';
+                  return _buildRecentModuleCard(title, initial, color, isDark);
+                }),
               ],
             ),
           ),
@@ -278,6 +299,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildRecentModuleCard(String title, String initial, Color avatarColor, bool isDark) {
+    bool isCustomModule = !['Flutter Basics: Introduction', 'State Management & Provider', 'Widgets & Layouts in Flutter', 'Advanced Routing & Navigation'].contains(title);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -309,20 +332,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
+          if (isCustomModule)
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+              onPressed: () {
+                setState(() {
+                  QuizData.removeModule(title);
+                });
+              },
+              tooltip: 'Hapus Modul',
+            ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF315B8C),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              side: BorderSide(color: isDark ? Colors.grey.shade700 : Colors.grey.shade300),
-              foregroundColor: isDark ? Colors.white : Colors.black87,
+              elevation: 1,
             ),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => QuizScreen(userName: widget.userName)),
+                MaterialPageRoute(
+                  builder: (context) => QuizScreen(
+                    userName: widget.userName,
+                    moduleTitle: title,
+                  ),
+                ),
               );
             },
-            child: const Text('Start Quiz', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            child: const Text('Start Quiz', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

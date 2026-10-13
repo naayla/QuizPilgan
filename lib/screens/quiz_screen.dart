@@ -1,65 +1,46 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/quiz_data.dart';
 import '../data/user_data.dart';
+import '../data/quiz_state.dart';
+import '../models/question.dart';
 import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final String userName;
+  final String? moduleTitle;
 
-  const QuizScreen({super.key, required this.userName});
+  const QuizScreen({super.key, required this.userName, this.moduleTitle});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  int _currentIndex = 0;
-  final Map<int, int> _selectedAnswers = {}; // questionIndex -> selectedOptionIndex
-  final Set<int> _doubtfulQuestions = {}; // questionIndex set
-  
-  // Stopwatch timer starting from 0 seconds (00:00)
-  int _elapsedSeconds = 0;
-  Timer? _timer;
+  final QuizStateController _state = QuizStateController();
+  late List<Question> _questions;
 
   @override
   void initState() {
     super.initState();
-    _startExamTimer();
-  }
-
-  void _startExamTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {
-          _elapsedSeconds++;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  String _formatTime(int seconds) {
-    final int minutes = seconds ~/ 60;
-    final int secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    _questions = QuizData.modules[widget.moduleTitle] ?? QuizData.questions;
+    if (_state.currentUser != widget.userName) {
+      _state.reset();
+      _state.currentUser = widget.userName;
+    }
   }
 
   void _finishExam() {
     int score = 0;
+    int pointsPerQ = 100 ~/ _questions.length;
 
-    for (int i = 0; i < QuizData.questions.length; i++) {
-      if (_selectedAnswers[i] == QuizData.questions[i].correctOptionIndex) {
-        score += 25;
+    for (int i = 0; i < _questions.length; i++) {
+      if (_state.selectedAnswers[i] == _questions[i].correctOptionIndex) {
+        score += pointsPerQ;
       }
     }
 
     UserData.addQuizResult(widget.userName, score);
+    _state.reset();
 
     Navigator.pushReplacement(
       context,
@@ -74,12 +55,12 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final question = QuizData.questions[_currentIndex];
-    final totalQ = QuizData.questions.length;
+    final question = _questions[_state.currentIndex];
+    final totalQ = _questions.length;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    int answeredCount = _selectedAnswers.length;
-    int doubtfulCount = _doubtfulQuestions.length;
+    int answeredCount = _state.selectedAnswers.length;
+    int doubtfulCount = _state.doubtfulQuestions.length;
     int unattemptedCount = totalQ - answeredCount;
 
     return Scaffold(
@@ -87,24 +68,8 @@ class _QuizScreenState extends State<QuizScreen> {
         backgroundColor: const Color(0xFF315B8C),
         elevation: 2,
         foregroundColor: Colors.white,
-        title: const Text('Quiz', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: Text(widget.moduleTitle ?? 'Quiz', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         actions: [
-          // Stopwatch Timer Badge starting from 00:00
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.timer, size: 16, color: Colors.white70),
-                const SizedBox(width: 6),
-                Text(_formatTime(_elapsedSeconds), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
           // Logout button
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
@@ -142,7 +107,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       child: Text('📘 Materi', style: TextStyle(color: isDark ? Colors.blue.shade200 : const Color(0xFF315B8C), fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                     const SizedBox(width: 12),
-                    Text('Soal ${_currentIndex + 1}/$totalQ', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.grey.shade400 : Colors.grey)),
+                    Text('Soal ${_state.currentIndex + 1}/$totalQ', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.grey.shade400 : Colors.grey)),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -175,7 +140,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         const SizedBox(height: 20),
                         // Options list with A, B, C, D badges
                         ...List.generate(question.options.length, (optIndex) {
-                          bool isSelected = _selectedAnswers[_currentIndex] == optIndex;
+                          bool isSelected = _state.selectedAnswers[_state.currentIndex] == optIndex;
                           String optLetter = String.fromCharCode(65 + optIndex); // A, B, C, D
 
                           return Container(
@@ -183,7 +148,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  _selectedAnswers[_currentIndex] = optIndex;
+                                  _state.selectedAnswers[_state.currentIndex] = optIndex;
                                 });
                               },
                               borderRadius: BorderRadius.circular(12),
@@ -253,10 +218,10 @@ class _QuizScreenState extends State<QuizScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      onPressed: _currentIndex > 0
+                      onPressed: _state.currentIndex > 0
                           ? () {
                               setState(() {
-                                _currentIndex--;
+                                _state.currentIndex--;
                               });
                             }
                           : null,
@@ -272,15 +237,15 @@ class _QuizScreenState extends State<QuizScreen> {
                       ),
                       onPressed: () {
                         setState(() {
-                          if (_doubtfulQuestions.contains(_currentIndex)) {
-                            _doubtfulQuestions.remove(_currentIndex);
+                          if (_state.doubtfulQuestions.contains(_state.currentIndex)) {
+                            _state.doubtfulQuestions.remove(_state.currentIndex);
                           } else {
-                            _doubtfulQuestions.add(_currentIndex);
+                            _state.doubtfulQuestions.add(_state.currentIndex);
                           }
                         });
                       },
                       icon: const Icon(Icons.help_outline, size: 16),
-                      label: Text(_doubtfulQuestions.contains(_currentIndex) ? 'Batalkan Ragu' : 'Ragu-ragu'),
+                      label: Text(_state.doubtfulQuestions.contains(_state.currentIndex) ? 'Batalkan Ragu' : 'Ragu-ragu'),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -289,10 +254,10 @@ class _QuizScreenState extends State<QuizScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      onPressed: _currentIndex < totalQ - 1
+                      onPressed: _state.currentIndex < totalQ - 1
                           ? () {
                               setState(() {
-                                _currentIndex++;
+                                _state.currentIndex++;
                               });
                             }
                           : null,
@@ -343,9 +308,9 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                           itemCount: totalQ,
                           itemBuilder: (context, index) {
-                            bool isCurrent = (index == _currentIndex);
-                            bool isAnswered = _selectedAnswers.containsKey(index);
-                            bool isDoubtful = _doubtfulQuestions.contains(index);
+                            bool isCurrent = (index == _state.currentIndex);
+                            bool isAnswered = _state.selectedAnswers.containsKey(index);
+                            bool isDoubtful = _state.doubtfulQuestions.contains(index);
 
                             Color boxColor = isDark ? Colors.grey.shade800 : Colors.grey.shade200;
                             Color textColor = isDark ? Colors.white70 : Colors.black87;
@@ -361,7 +326,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             return InkWell(
                               onTap: () {
                                 setState(() {
-                                  _currentIndex = index;
+                                  _state.currentIndex = index;
                                 });
                               },
                               borderRadius: BorderRadius.circular(8),

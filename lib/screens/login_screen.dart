@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return AuthCard(
       appBarTitle: 'Aplikasi Quiz',
-      title: 'Masuk (Login)',
+      title: 'Login',
       subtitle: 'Silakan masuk untuk mulai mengerjakan kuis.',
       icon: Icons.lock_outline,
       formContent: Form(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   }
                 },
-                child: const Text('MASUK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text('Login', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -98,19 +98,25 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
           children: [
             TextSpan(
-              text: 'Daftar di sini',
+              text: ' Daftar di sini',
               style: const TextStyle(
                 color: Color(0xFF315B8C),
                 fontWeight: FontWeight.bold,
               ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.push(
+                ..onTap = () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => RegisterScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
                     ),
                   );
+                  if (result != null && result is Map<String, String>) {
+                    setState(() {
+                      _emailController.text = result['email'] ?? '';
+                      _passwordController.text = result['password'] ?? '';
+                    });
+                  }
                 },
             ),
           ],

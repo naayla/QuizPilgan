@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return AuthCard(
       appBarTitle: 'Aplikasi Quiz',
-      title: 'Daftar Akun',
+      title: 'Register',
       subtitle: 'Daftar untuk mulai menjelajahi kuis.',
       icon: Icons.person_add_outlined,
       formContent: Form(
@@ -104,12 +104,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (_formKey.currentState!.validate()) {
                     UserData.addUser(_nameController.text.trim(), _emailController.text.trim());
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Registrasi berhasil! Silakan masuk.')),
+                      const SnackBar(content: Text('Register berhasil! Silakan masuk.')),
                     );
-                    Navigator.pop(context);
+                    Navigator.pop(context, {
+                      'email': _emailController.text.trim(),
+                      'password': _passwordController.text.trim(),
+                    });
                   }
                 },
-                child: const Text('DAFTAR', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text('Register', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -121,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
           children: [
             TextSpan(
-              text: 'Masuk di sini',
+              text: ' Masuk di sini',
               style: const TextStyle(
                 color: Color(0xFF315B8C),
                 fontWeight: FontWeight.bold,

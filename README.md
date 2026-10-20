@@ -11,10 +11,10 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
 ---
 
 ## b. Informasi Aplikasi
-- **i. Nama Aplikasi:** QuizPilgan 
-- **ii. Deskripsi Singkat Aplikasi:** 
+- **Nama Aplikasi:** QuizPilgan 
+- **Deskripsi Singkat Aplikasi:** 
   QuizPilgan adalah aplikasi mobile berbasis Flutter yang dirancang untuk memudahkan pelaksanaan kuis dan ujian pilihan ganda secara interaktif. Aplikasi ini dilengkapi dengan sistem autentikasi (Login & Register), Dashboard interaktif dengan modul materi kuis, navigasi soal CBT, serta pencatatan riwayat nilai siswa secara *real-time*.
-- **iii. Fitur-fitur yang Tersedia:**
+- **Fitur-fitur yang Tersedia:**
   1. **Autentikasi Pengguna:** Halaman Login & Register dengan validasi form dan fitur *auto-fill* kredensial saat selesai mendaftar.
   2. **Dual Theme (Light & Dark Mode):** Kemampuan beralih tema terang dan gelap secara instan di seluruh halaman aplikasi.
   3. **Dashboard Interaktif:** Menu navigasi (Dashboard & Data Siswa), panduan pengerjaan (*Quick Actions*), serta daftar modul kuis/ujian.
@@ -26,10 +26,10 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
 ---
 
 ## c. Dokumentasi
-- **i. Credit Sumber Aset:**
+- **Credit Sumber Aset:**
   - Ikon antarmuka menggunakan pustaka bawaan Flutter (`Material Icons` & `Cupertino Icons`).
   - Tipografi menggunakan font kustom **Poppins** melalui package `google_fonts`.
-- **ii. Screenshot Tiap Page Aplikasi:**
+- **Screenshot Tiap Page Aplikasi:**
   *(Silakan lampirkan screenshot pada bagian ini)*
   - Halaman Login / Register
   - Halaman Dashboard
@@ -37,7 +37,7 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
   - Halaman Pengerjaan Kuis (CBT)
   - Halaman Hasil Kuis & Skor Akhir
   - Halaman Riwayat Nilai Siswa
-- **iii. Link Mockup / Prototype Aplikasi:**
+- **Link Mockup / Prototype Aplikasi:**
   - https://www.figma.com/design/fzGbVXCbPvwMVU9jMOlAk6/KuisPilgan?node-id=0-1&t=g2uy9hoBvxKYdcGu-1
 - **iv. Link Video Presentasi (Google Drive):**
   - [Link Video Presentasi Google Drive Anda di sini (Maksimal 10 menit)](https://drive.google.com/)

@@ -23,9 +23,10 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     _questions = QuizData.modules[widget.moduleTitle] ?? QuizData.questions;
-    if (_state.currentUser != widget.userName) {
+    if (_state.currentUser != widget.userName || _state.currentUserModule != widget.moduleTitle) {
       _state.reset();
       _state.currentUser = widget.userName;
+      _state.currentUserModule = widget.moduleTitle ?? '';
     }
   }
 
@@ -55,13 +56,14 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure currentIndex is within bounds of current module questions
+    if (_state.currentIndex >= _questions.length) {
+      _state.currentIndex = 0;
+    }
+
     final question = _questions[_state.currentIndex];
     final totalQ = _questions.length;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    int answeredCount = _state.selectedAnswers.length;
-    int doubtfulCount = _state.doubtfulQuestions.length;
-    int unattemptedCount = totalQ - answeredCount;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,23 +71,6 @@ class _QuizScreenState extends State<QuizScreen> {
         elevation: 2,
         foregroundColor: Colors.white,
         title: Text(widget.moduleTitle ?? 'Quiz', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        actions: [
-          // Logout button
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red.shade600,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.logout, size: 14),
-            label: const Text('Logout', style: TextStyle(fontSize: 12)),
-          ),
-          const SizedBox(width: 12),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -205,18 +190,16 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Navigation Action Buttons Bar
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  alignment: WrapAlignment.spaceBetween,
+                // Navigation Action Buttons Bar (Only Sebelumnya & Berikutnya)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: const Color(0xFF315B8C),
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: _state.currentIndex > 0
                           ? () {
@@ -226,66 +209,38 @@ class _QuizScreenState extends State<QuizScreen> {
                             }
                           : null,
                       icon: const Icon(Icons.arrow_back, size: 16),
-                      label: const Text('Sebelumnya'),
-                    ),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber.shade700,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          if (_state.doubtfulQuestions.contains(_state.currentIndex)) {
-                            _state.doubtfulQuestions.remove(_state.currentIndex);
-                          } else {
-                            _state.doubtfulQuestions.add(_state.currentIndex);
-                          }
-                        });
-                      },
-                      icon: const Icon(Icons.help_outline, size: 16),
-                      label: Text(_state.doubtfulQuestions.contains(_state.currentIndex) ? 'Batalkan Ragu' : 'Ragu-ragu'),
+                      label: const Text('Sebelumnya', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF315B8C),
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      onPressed: _state.currentIndex < totalQ - 1
-                          ? () {
-                              setState(() {
-                                _state.currentIndex++;
-                              });
-                            }
-                          : null,
-                      child: const Row(
+                      onPressed: () {
+                        if (_state.currentIndex < totalQ - 1) {
+                          setState(() {
+                            _state.currentIndex++;
+                          });
+                        } else {
+                          _finishExam();
+                        }
+                      },
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text('Berikutnya'),
-                          SizedBox(width: 4),
-                          Icon(Icons.arrow_forward, size: 16),
+                          Text(_state.currentIndex == totalQ - 1 ? 'Selesai Ujian' : 'Berikutnya', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 4),
+                          Icon(_state.currentIndex == totalQ - 1 ? Icons.check : Icons.arrow_forward, size: 16),
                         ],
                       ),
-                    ),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade700,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      onPressed: _finishExam,
-                      icon: const Icon(Icons.check, size: 16),
-                      label: const Text('Selesai Ujian'),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
 
-                // Navigasi Soal Card
+                // Navigasi Soal Card (Only title and number grid)
                 Card(
                   elevation: 2,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -345,44 +300,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
-                        // Legend
-                        Wrap(
-                          spacing: 16,
-                          runSpacing: 8,
-                          children: [
-                            _buildLegendItem(const Color(0xFF315B8C), 'Sudah dijawab', isDark),
-                            _buildLegendItem(Colors.amber.shade400, 'Ragu-ragu', isDark),
-                            _buildLegendItem(isDark ? Colors.grey.shade800 : Colors.grey.shade200, 'Belum dijawab', isDark, textColor: isDark ? Colors.white70 : Colors.black87),
-                          ],
-                        ),
-                        Divider(height: 32, color: isDark ? Colors.grey.shade800 : Colors.grey.shade300),
-                        // Statistik
-                        Text('Statistik', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: isDark ? Colors.white : Colors.black87)),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Dijawab:', style: TextStyle(color: isDark ? Colors.grey.shade300 : Colors.black87)),
-                            Text('$answeredCount', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Ragu-ragu:', style: TextStyle(color: isDark ? Colors.grey.shade300 : Colors.black87)),
-                            Text('$doubtfulCount', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Belum:', style: TextStyle(color: isDark ? Colors.grey.shade300 : Colors.black87)),
-                            Text('$unattemptedCount', style: TextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
-                          ],
-                        ),
                       ],
                     ),
                   ),
@@ -392,21 +309,6 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildLegendItem(Color color, String label, bool isDark, {Color textColor = Colors.white}) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 16,
-          height: 16,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-        ),
-        const SizedBox(width: 6),
-        Text(label, style: TextStyle(fontSize: 12, color: isDark ? Colors.grey.shade300 : Colors.black87)),
-      ],
     );
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'logo_painter.dart';
 
 class AuthCard extends StatelessWidget {
   final String appBarTitle;
   final String title;
-  final String subtitle;
   final IconData icon;
   final Widget formContent;
   final Widget bottomAction;
@@ -13,7 +11,6 @@ class AuthCard extends StatelessWidget {
     super.key,
     required this.appBarTitle,
     required this.title,
-    required this.subtitle,
     required this.icon,
     required this.formContent,
     required this.bottomAction,
@@ -50,7 +47,7 @@ class AuthCard extends StatelessWidget {
                         color: const Color(0xFF315B8C),
                         shape: BoxShape.circle,
                       ),
-                      child: const LogoPainterWidget(size: 48),
+                      child: const Icon(Icons.person_outline, size: 48, color: Colors.white),
                     ),
                     const SizedBox(height: 24),
                     Text(
@@ -60,12 +57,6 @@ class AuthCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: isDark ? Colors.blue.shade300 : const Color(0xFF315B8C),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      subtitle,
-                      style: TextStyle(fontSize: 14, color: isDark ? Colors.grey.shade400 : Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 28),

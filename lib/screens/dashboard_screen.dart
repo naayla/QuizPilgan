@@ -142,7 +142,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: () {
-                        // Show instructions dialog or start quick quiz
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -299,8 +298,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildRecentModuleCard(String title, String initial, Color avatarColor, bool isDark) {
-    bool isCustomModule = !['Flutter Basics: Introduction', 'State Management & Provider', 'Widgets & Layouts in Flutter', 'Advanced Routing & Navigation'].contains(title);
-
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -332,16 +329,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-          if (isCustomModule)
-            IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
-              onPressed: () {
-                setState(() {
-                  QuizData.removeModule(title);
-                });
-              },
-              tooltip: 'Hapus Modul',
-            ),
           const SizedBox(width: 8),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

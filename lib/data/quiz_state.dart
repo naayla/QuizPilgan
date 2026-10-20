@@ -8,6 +8,7 @@ class QuizStateController {
   final Set<int> doubtfulQuestions = {};
   int elapsedSeconds = 0;
   String currentUser = '';
+  String currentUserModule = '';
 
   void reset() {
     currentIndex = 0;

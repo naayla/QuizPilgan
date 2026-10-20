@@ -27,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return AuthCard(
       appBarTitle: 'Aplikasi Quiz',
       title: 'Login',
-      subtitle: 'Silakan masuk untuk mulai mengerjakan kuis.',
       icon: Icons.lock_outline,
       formContent: Form(
         key: _formKey,
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
           children: [
             TextSpan(
-              text: ' Daftar di sini',
+              text: 'Daftar di sini',
               style: const TextStyle(
                 color: Color(0xFF315B8C),
                 fontWeight: FontWeight.bold,

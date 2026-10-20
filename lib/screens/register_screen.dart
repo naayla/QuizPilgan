@@ -27,7 +27,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return AuthCard(
       appBarTitle: 'Aplikasi Quiz',
       title: 'Register',
-      subtitle: 'Daftar untuk mulai menjelajahi kuis.',
       icon: Icons.person_add_outlined,
       formContent: Form(
         key: _formKey,
@@ -124,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(color: isDark ? Colors.grey.shade400 : Colors.grey.shade700, fontSize: 14),
           children: [
             TextSpan(
-              text: ' Masuk di sini',
+              text: 'Masuk di sini',
               style: const TextStyle(
                 color: Color(0xFF315B8C),
                 fontWeight: FontWeight.bold,

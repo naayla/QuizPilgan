@@ -12,7 +12,7 @@ class ResultScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1976D2),
+        backgroundColor: const Color(0xFF315B8C),
         foregroundColor: Colors.white,
         title: const Text('Hasil Kuis', style: TextStyle(fontWeight: FontWeight.bold)),
         automaticallyImplyLeading: false,
@@ -35,7 +35,7 @@ class ResultScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     Text(
                       'Terima Kasih, $userName!',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2)),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF315B8C)),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
@@ -43,7 +43,7 @@ class ResultScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       '$score',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF1976D2)),
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: isDark ? Colors.blue.shade300 : const Color(0xFF315B8C)),
                     ),
                     const SizedBox(height: 36),
                     SizedBox(
@@ -51,7 +51,7 @@ class ResultScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1976D2),
+                          backgroundColor: const Color(0xFF315B8C),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),

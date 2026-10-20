@@ -45,6 +45,6 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
     ![Riwayat Nilai Siswa](img_5.png)
 - **Link Mockup / Prototype Aplikasi:**
   - https://www.figma.com/design/fzGbVXCbPvwMVU9jMOlAk6/KuisPilgan?node-id=0-1&t=g2uy9hoBvxKYdcGu-1
-- **iv. Link Video Presentasi (Google Drive):**
+- **Link Video Presentasi (Google Drive):**
   - https://drive.google.com/drive/folders/1DhB7lyZ1Tn-mcE4X-3Zm-9H_wUxTJ2p-?usp=sharing
 

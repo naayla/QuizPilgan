@@ -32,11 +32,17 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
 - **Screenshot Tiap Page Aplikasi:**
   *(Silakan lampirkan screenshot pada bagian ini)*
   - Halaman Login / Register
+    ![Login](img.png)
   - Halaman Dashboard
+    ![Dashboard](img_1.png)
   - Halaman Data Siswa
+    ![Data Siswa](img_2.png)
   - Halaman Pengerjaan Kuis (CBT)
+    ![Pengerjaan Kuis](img_3.png)
   - Halaman Hasil Kuis & Skor Akhir
+    ![Hasil Kuis](img_4.png)
   - Halaman Riwayat Nilai Siswa
+    ![Riwayat Nilai Siswa](img_5.png)
 - **Link Mockup / Prototype Aplikasi:**
   - https://www.figma.com/design/fzGbVXCbPvwMVU9jMOlAk6/KuisPilgan?node-id=0-1&t=g2uy9hoBvxKYdcGu-1
 - **iv. Link Video Presentasi (Google Drive):**

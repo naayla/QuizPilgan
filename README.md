@@ -6,7 +6,7 @@ Repositori ini dibuat untuk memenuhi tugas Ujian Tengah Semester (UTS) / Praktik
 ## a. Identitas Mahasiswa
 - **Nama:** Nayla Syifa Tanjung
 - **NIM:** 241401019
-- **Lab.:** 1
+- **Lab:** 1
 
 ---
 
